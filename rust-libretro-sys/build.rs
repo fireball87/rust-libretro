@@ -122,19 +122,19 @@ fn main() {
     // Add lifetime to retro_vulkan_image struct
     content = content.replace(
         "pub struct retro_vulkan_image {\n    pub image_view: VkImageView,\n    pub image_layout: VkImageLayout,\n    pub create_info: VkImageViewCreateInfo,\n}",
-        "pub struct retro_vulkan_image<'static> {\n    pub image_view: VkImageView,\n    pub image_layout: VkImageLayout,\n    pub create_info: VkImageViewCreateInfo<'static>,\n}"
+        "pub struct retro_vulkan_image<'a> {\n    pub image_view: VkImageView,\n    pub image_layout: VkImageLayout,\n    pub create_info: VkImageViewCreateInfo<'a>,\n}"
     );
 
     // Fix the Debug impl for retro_vulkan_image
     content = content.replace(
         "impl ::core::fmt::Debug for retro_vulkan_image {",
-        "impl<'static> ::core::fmt::Debug for retro_vulkan_image<'static> {"
+        "impl<'a> ::core::fmt::Debug for retro_vulkan_image<'a> {"
     );
 
     // Fix retro_vulkan_get_application_info_t return type
     content = content.replace(
         "::core::option::Option<unsafe extern \"C\" fn() -> *const VkApplicationInfo>",
-        "::core::option::Option<unsafe extern \"C\" fn() -> *const VkApplicationInfo<'static>>"
+        "::core::option::Option<unsafe extern \"C\" fn() -> *const VkApplicationInfo<'a>>"
     );
 
     fs::write(&bindings_path, content)
