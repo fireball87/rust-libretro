@@ -13,10 +13,9 @@ homepage = "https://github.com/max-m/rust-libretro/"
 repository = "https://github.com/max-m/rust-libretro/"
 
 [features]
-vulkan = ["dep:ash"]
+vulkan = []
 
 [dependencies]
-ash = { version = "0.38.0", optional = true }
 libc = "0.2.139"
 rust-libretro-sys-proc = { version = "0.3.1", path = "rust-libretro-sys-proc" }
 

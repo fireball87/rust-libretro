@@ -81,8 +81,8 @@ fn libretro_vulkan_h() -> bindgen::Builder {
         .allowlist_type("retro.*vulkan")
         .allowlist_var("RETRO_.+_VULKAN_VERSION")
         .blocklist_type("^retro_hw_render.*type$")
-        .blocklist_type("Vk.*")
-        .blocklist_type("PFN_vk.*")
+        //.blocklist_type("Vk.*")
+        //.blocklist_type("PFN_vk.*")
         .prepend_enum_name(false)
         .impl_debug(true)
         .clang_arg("-fparse-all-comments")
@@ -116,26 +116,26 @@ fn main() {
     // Post-process Vulkan bindings to add lifetimes
     let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
     let bindings_path = out_path.join("bindings_libretro_vulkan.rs");
-    let mut content = fs::read_to_string(&bindings_path)
+    let content = fs::read_to_string(&bindings_path)
         .expect("Failed to read generated bindings");
 
-    // Add lifetime to retro_vulkan_image struct
-    content = content.replace(
-        "pub struct retro_vulkan_image {\n    pub image_view: VkImageView,\n    pub image_layout: VkImageLayout,\n    pub create_info: VkImageViewCreateInfo,\n}",
-        "pub struct retro_vulkan_image<'a> {\n    pub image_view: VkImageView,\n    pub image_layout: VkImageLayout,\n    pub create_info: VkImageViewCreateInfo<'a>,\n}"
-    );
+    // // Add lifetime to retro_vulkan_image struct
+    // content = content.replace(
+    //     "pub struct retro_vulkan_image {\n    pub image_view: VkImageView,\n    pub image_layout: VkImageLayout,\n    pub create_info: VkImageViewCreateInfo,\n}",
+    //     "pub struct retro_vulkan_image<'a> {\n    pub image_view: VkImageView,\n    pub image_layout: VkImageLayout,\n    pub create_info: VkImageViewCreateInfo<'a>,\n}"
+    // );
 
-    // Fix the Debug impl for retro_vulkan_image
-    content = content.replace(
-        "impl ::core::fmt::Debug for retro_vulkan_image {",
-        "impl<'a> ::core::fmt::Debug for retro_vulkan_image<'a> {"
-    );
+    // // Fix the Debug impl for retro_vulkan_image
+    // content = content.replace(
+    //     "impl ::core::fmt::Debug for retro_vulkan_image {",
+    //     "impl<'a> ::core::fmt::Debug for retro_vulkan_image<'a> {"
+    // );
 
-    // Fix retro_vulkan_get_application_info_t return type
-    content = content.replace(
-        "::core::option::Option<unsafe extern \"C\" fn() -> *const VkApplicationInfo>",
-        "::core::option::Option<unsafe extern \"C\" fn() -> *const VkApplicationInfo<'static>>"
-    );
+    // // Fix retro_vulkan_get_application_info_t return type
+    // content = content.replace(
+    //     "::core::option::Option<unsafe extern \"C\" fn() -> *const VkApplicationInfo>",
+    //     "::core::option::Option<unsafe extern \"C\" fn() -> *const VkApplicationInfo<'static>>"
+    // );
 
     fs::write(&bindings_path, content)
         .expect("Failed to write modified bindings");

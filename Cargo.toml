@@ -2,12 +2,10 @@
 resolver = "3"
 members = [
 	"rust-libretro-sys",
-	"rust-libretro",
-	"rust-libretro-example-core",
 ]
 
 default-members = [
-	"rust-libretro"
+	"rust-libretro-sys"
 ]
 
 [profile.dev]
