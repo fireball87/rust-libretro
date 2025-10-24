@@ -131,6 +131,12 @@ fn main() {
         "impl<'a> ::core::fmt::Debug for retro_vulkan_image<'a> {"
     );
 
+    // Fix the Debug impl for retro_hw_render_context_negotiation_interface_vulkan
+    content = content.replace(
+        "impl ::core::fmt::Debug for retro_hw_render_context_negotiation_interface_vulkan {",
+        "impl<'a> ::core::fmt::Debug for retro_hw_render_context_negotiation_interface_vulkan<'a> {"
+    );
+
 
     // Fix retro_vulkan_get_application_info_t return type
     content = content.replace(
