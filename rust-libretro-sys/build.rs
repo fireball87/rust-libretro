@@ -140,6 +140,12 @@ fn main() {
     ::core::option::Option<unsafe extern \"C\" fn() -> *const VkApplicationInfo<'a>>"
     );
 
+    // Add lifetime to retro_hw_render_context_negotiation_interface_vulkan struct
+    content = content.replace(
+        "pub struct retro_hw_render_context_negotiation_interface_vulkan {",
+        "pub struct retro_hw_render_context_negotiation_interface_vulkan<'a> {"
+    );
+
     // Fix the field in retro_hw_render_context_negotiation_interface_vulkan to use the lifetime
     content = content.replace(
         "    pub get_application_info: retro_vulkan_get_application_info_t,",
