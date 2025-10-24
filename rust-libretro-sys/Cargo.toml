@@ -1,7 +1,7 @@
 [package]
 name = "rust-libretro-sys"
-version = "0.3.2"
-edition = "2021"
+version = "0.3.3"
+edition = "2024"
 authors = [ "Maximilian Mader" ]
 description = "libretro API bindings generated via bindgen"
 keywords = [ "libretro", "RetroArch", "emulator", "game", "bindgen" ]
@@ -16,9 +16,9 @@ repository = "https://github.com/max-m/rust-libretro/"
 vulkan = ["dep:ash"]
 
 [dependencies]
-ash = { version = "0.37.2", optional = true }
+ash = { version = "0.38.0", optional = true }
 libc = "0.2.139"
 rust-libretro-sys-proc = { version = "0.3.1", path = "rust-libretro-sys-proc" }
 
 [build-dependencies]
-bindgen = "0.63.0"
+bindgen = "0.72.1"
