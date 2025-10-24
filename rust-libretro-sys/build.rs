@@ -131,10 +131,13 @@ fn main() {
         "impl<'a> ::core::fmt::Debug for retro_vulkan_image<'a> {"
     );
 
+
     // Fix retro_vulkan_get_application_info_t return type
     content = content.replace(
-        "::core::option::Option<unsafe extern \"C\" fn() -> *const VkApplicationInfo>",
-        "::core::option::Option<unsafe extern \"C\" fn() -> *const VkApplicationInfo<'a>>"
+        "pub type retro_vulkan_get_application_info_t =
+    ::core::option::Option<unsafe extern \"C\" fn() -> *const VkApplicationInfo>",
+        "pub type retro_vulkan_get_application_info_t<'a> =
+    ::core::option::Option<unsafe extern \"C\" fn() -> *const VkApplicationInfo<'a>>"
     );
 
     fs::write(&bindings_path, content)
