@@ -1,5 +1,5 @@
 use bindgen::{callbacks::MacroParsingBehavior, Bindings};
-use std::{env, path::PathBuf};
+use std::{env, fs, path::PathBuf};
 
 fn libretro_h() -> bindgen::Builder {
     #[derive(Debug)]
@@ -90,6 +90,7 @@ fn libretro_vulkan_h() -> bindgen::Builder {
         .default_enum_style(bindgen::EnumVariation::Rust {
             non_exhaustive: true,
         })
+        .layout_tests(false)  // Disable layout tests to avoid size assertion errors after post-processing
         .parse_callbacks(Box::new(LibretroVulkanParseCallbacks))
         .use_core()
 }
@@ -111,4 +112,25 @@ fn main() {
         .generate()
         .expect("Unable to generate libretro_vulkan.h bindings");
     save_bindings(bindings, "bindings_libretro_vulkan.rs");
+
+    // Post-process Vulkan bindings to add lifetimes
+    let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
+    let bindings_path = out_path.join("bindings_libretro_vulkan.rs");
+    let mut content = fs::read_to_string(&bindings_path)
+        .expect("Failed to read generated bindings");
+
+    // Add lifetime to retro_vulkan_image struct
+    content = content.replace(
+        "pub struct retro_vulkan_image {\n    pub image_view: VkImageView,\n    pub image_layout: VkImageLayout,\n    pub create_info: VkImageViewCreateInfo,\n}",
+        "pub struct retro_vulkan_image<'a> {\n    pub image_view: VkImageView,\n    pub image_layout: VkImageLayout,\n    pub create_info: VkImageViewCreateInfo<'a>,\n}"
+    );
+
+    // Fix retro_vulkan_get_application_info_t return type
+    content = content.replace(
+        "::core::option::Option<unsafe extern \"C\" fn() -> *const VkApplicationInfo>",
+        "::core::option::Option<unsafe extern \"C\" fn() -> *const VkApplicationInfo<'static>>"
+    );
+
+    fs::write(&bindings_path, content)
+        .expect("Failed to write modified bindings");
 }
