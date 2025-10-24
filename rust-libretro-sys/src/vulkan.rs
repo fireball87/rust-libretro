@@ -10,13 +10,14 @@ use ash::vk::*;
 
 pub type PFN_vkGetInstanceProcAddr = Option<ash::vk::PFN_vkGetInstanceProcAddr>;
 pub type PFN_vkGetDeviceProcAddr = Option<ash::vk::PFN_vkGetDeviceProcAddr>;
-pub type VkApplicationInfo = Option<ash::vk::VkApplicationInfo>; 
-pub type VkInstanceCreateInfo = Option<ash::vk::VkInstanceCreateInfo>;
+pub type VkApplicationInfo = Option<ash::vk::ApplicationInfo>; 
+pub type VkInstanceCreateInfo = Option<ash::vk::InstanceCreateInfo>;
+pub type VkDeviceCreateInfo = Option<ash::vk::DeviceCreateInfo>;
 pub type VkCommandBuffer = CommandBuffer;
 pub type VkDevice = Device;
 pub type VkImageLayout = ImageLayout;
 pub type VkImageView = ImageView;
-pub type VkImageViewCreateInfo = Option<ash::vk::VkImageViewCreateInfo>; 
+pub type VkImageViewCreateInfo = Option<ash::vk::ImageViewCreateInfo>; 
 pub type VkInstance = Instance;
 pub type VkPhysicalDevice = PhysicalDevice;
 pub type VkPhysicalDeviceFeatures = PhysicalDeviceFeatures;
