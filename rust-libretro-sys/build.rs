@@ -125,6 +125,12 @@ fn main() {
         "pub struct retro_vulkan_image<'a> {\n    pub image_view: VkImageView,\n    pub image_layout: VkImageLayout,\n    pub create_info: VkImageViewCreateInfo<'a>,\n}"
     );
 
+    // Fix the Debug impl for retro_vulkan_image
+    content = content.replace(
+        "impl ::core::fmt::Debug for retro_vulkan_image {",
+        "impl<'a> ::core::fmt::Debug for retro_vulkan_image<'a> {"
+    );
+
     // Fix retro_vulkan_get_application_info_t return type
     content = content.replace(
         "::core::option::Option<unsafe extern \"C\" fn() -> *const VkApplicationInfo>",
