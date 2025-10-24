@@ -140,6 +140,12 @@ fn main() {
     ::core::option::Option<unsafe extern \"C\" fn() -> *const VkApplicationInfo<'a>>"
     );
 
+    // Fix the field in retro_hw_render_context_negotiation_interface_vulkan to use the lifetime
+    content = content.replace(
+        "    pub get_application_info: retro_vulkan_get_application_info_t,",
+        "    pub get_application_info: retro_vulkan_get_application_info_t<'a>,"
+    );
+
     fs::write(&bindings_path, content)
         .expect("Failed to write modified bindings");
 }
